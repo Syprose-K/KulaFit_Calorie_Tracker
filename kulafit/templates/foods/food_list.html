@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Food List</h2>
+<ul>
+  {% for food in foods %}
+    <li>{{ food.name }} - {{ food.calories_per_unit }} kcal</li>
+  {% endfor %}
+</ul>
+{% endblock %}

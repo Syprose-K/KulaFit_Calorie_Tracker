@@ -1,0 +1,20 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="weightChart"></canvas>
+
+<script>
+const ctx = document.getElementById('weightChart');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ dates|safe }},
+        datasets: [{
+            label: 'Weight (kg)',
+            data: {{ weights|safe }},
+            fill: false,
+            tension: 0.3
+        }]
+    }
+});
+</script>

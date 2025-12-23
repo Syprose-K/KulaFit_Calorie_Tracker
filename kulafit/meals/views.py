@@ -12,9 +12,13 @@ def dashboard(request):
     today = date.today()
     summary = daily_summary(request.user, today)
 
+    weights = WeightLog.objects.filter(user=request.user).order_by('date')
+    
+
     return render(request, 'meals/dashboard.html', {
         'summary': summary,
-        'date': today
+        'date': today,
+
     })
 
 
@@ -61,5 +65,5 @@ def log_weight(request):
 
     return render(request, 'meals/log_weight.html', {
         'form': form,
-        'weights': weights
+        'weights': weights,
     })

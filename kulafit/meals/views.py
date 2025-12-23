@@ -20,6 +20,8 @@ def dashboard(request):
     return render(request, 'meals/dashboard.html', {
         'summary': summary,
         'date': today,
+        'weight_dates': weight_dates,
+        'weight_values': weight_values,
 
     })
 

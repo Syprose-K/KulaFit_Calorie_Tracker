@@ -1,3 +1,5 @@
+
+
 <h2>Dashboard – {{ date }}</h2>
 
 <ul>
@@ -6,3 +8,31 @@
   <li>Carbs: {{ summary.carbs }} g</li>
   <li>Fats: {{ summary.fats }} g</li>
 </ul>
+
+  <li>Fats: {{ summary.fats }} g</li>
+</ul>
+
+<hr>
+
+<h3>Weight Progress</h3>
+<canvas id="weightChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('weightChart');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ weight_dates|safe }},
+        datasets: [{
+            label: 'Weight (kg)',
+            data: {{ weight_values|safe }},
+            tension: 0.3,
+            fill: false
+        }]
+    }
+});
+</script>
+
+{% endblock %}

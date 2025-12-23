@@ -13,7 +13,8 @@ def dashboard(request):
     summary = daily_summary(request.user, today)
 
     weights = WeightLog.objects.filter(user=request.user).order_by('date')
-    
+    weight_dates = [w.date.strftime('%Y-%m-%d') for w in weights]
+
 
     return render(request, 'meals/dashboard.html', {
         'summary': summary,

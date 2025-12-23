@@ -14,6 +14,7 @@ def dashboard(request):
 
     weights = WeightLog.objects.filter(user=request.user).order_by('date')
     weight_dates = [w.date.strftime('%Y-%m-%d') for w in weights]
+    weight_values = [w.weight for w in weights]
 
 
     return render(request, 'meals/dashboard.html', {

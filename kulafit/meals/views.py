@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import MealLogForm
+from .forms import MealLogForm, WeightLogForm
 from datetime import date
 from .utils import daily_summary
 from django.db.models import Sum
@@ -42,4 +42,24 @@ def weight_chart(request):
     return render(request, 'meals/weight_chart.html', {
         'dates': dates,
         'weights': values
+    })
+
+
+@login_required
+def log_weight(request):
+    if request.method == 'POST':
+        form = WeightLogForm(request.POST)
+        if form.is_valid():
+            weight_log = form.save(commit=False)
+            weight_log.user = request.user
+            weight_log.save()
+            return redirect('dashboard')
+    else:
+        form = WeightLogForm()
+
+    weights = WeightLog.objects.filter(user=request.user)
+
+    return render(request, 'meals/log_weight.html', {
+        'form': form,
+        'weights': weights
     })

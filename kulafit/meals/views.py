@@ -16,14 +16,22 @@ def dashboard(request):
     weight_dates = [w.date.strftime('%Y-%m-%d') for w in weights]
     weight_values = [w.weight for w in weights]
 
+    macro_labels = ['Protein', 'Carbs', 'Fats']
+    macro_values = [
+    summary['protein'],
+    summary['carbs'],
+    summary['fats'],
+    ]
+
 
     return render(request, 'meals/dashboard.html', {
         'summary': summary,
-        'date': today,
         'weight_dates': weight_dates,
         'weight_values': weight_values,
-
-    })
+        'macro_labels': macro_labels,
+        'macro_values': macro_values,
+        'date': today,
+     })
 
 
 @login_required

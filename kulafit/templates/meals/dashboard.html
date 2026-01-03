@@ -28,6 +28,8 @@
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- Charts Script -->
+<script>
   // Weight Line Chart
   const weightCtx = document.getElementById('weightChart');
 
@@ -59,20 +61,5 @@
 
 
 <script>
-const ctx = document.getElementById('weightChart');
-
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: {{ weight_dates|safe }},
-        datasets: [{
-            label: 'Weight (kg)',
-            data: {{ weight_values|safe }},
-            tension: 0.3,
-            fill: false
-        }]
-    }
-});
-</script>
 
 {% endblock %}

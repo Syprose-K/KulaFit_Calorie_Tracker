@@ -18,21 +18,26 @@ class MealLog(models.Model):
     meal_type = models.CharField(max_length=20, choices=MEAL_TYPES)
     date = models.DateField(auto_now_add=True)
 
+    calories = models.FloatField(default=0)
+    protein = models.FloatField(default=0)
+    carbs = models.FloatField(default=0)
+    fats = models.FloatField(default=0)
 
     def clean(self):
         if self.quantity <= 0:
             raise ValidationError("Quantity must be greater than zero.")
 
-    def total_calories(self):
-        return self.quantity * self.food.calories_per_unit
+    def save(self, *args, **kwargs):
+        # Auto-calculate totals
+        self.calories = self.quantity * self.food.calories_per_unit
+        self.protein = self.quantity * self.food.protein_per_unit
+        self.carbs = self.quantity * self.food.carbs_per_unit
+        self.fats = self.quantity * self.food.fats_per_unit
+        super().save(*args, **kwargs)
 
-    def total_macros(self):
-        return {
-            "protein": self.quantity * self.food.protein_per_unit,
-            "carbs": self.quantity * self.food.carbs_per_unit,
-            "fats": self.quantity * self.food.fats_per_unit,
-        }
-
+    def __str__(self):
+        return f"{self.user.username} - {self.food.name} ({self.quantity} {self.food.measurement_unit})"
+    
 class WeightLog(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     weight = models.FloatField()

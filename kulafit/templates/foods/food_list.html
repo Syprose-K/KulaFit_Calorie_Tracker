@@ -1,9 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Food List</h2>
-<ul>
-  {% for food in foods %}
-    <li>{{ food.name }} - {{ food.calories_per_unit }} kcal</li>
-  {% endfor %}
-</ul>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Calories</th>
+      <th>Protein</th>
+      <th>Carbs</th>
+      <th>Fats</th>
+      <th>Unit</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for food in foods %}
+    <tr>
+      <td>{{ food.name }}</td>
+      <td>{{ food.food_type }}</td>
+      <td>{{ food.calories_per_unit }}</td>
+      <td>{{ food.protein_per_unit }}</td>
+      <td>{{ food.carbs_per_unit }}</td>
+      <td>{{ food.fats_per_unit }}</td>
+      <td>{{ food.measurement_unit }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

@@ -41,6 +41,31 @@
   </div>
 </div>
 
+<div style="width: 80%; margin: auto; margin-top:40px;">
+  <h3>Calories Last 7 Days</h3>
+  <canvas id="caloriesChart"></canvas>
+</div>
+
+<script>
+const caloriesCtx = document.getElementById('caloriesChart');
+new Chart(caloriesCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ last7_dates|safe }},
+        datasets: [{
+            label: 'Calories (kcal)',
+            data: {{ last7_calories|safe }},
+            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+    }
+});
+</script>
 
 <hr>
 

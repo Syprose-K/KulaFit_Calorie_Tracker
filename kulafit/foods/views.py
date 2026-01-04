@@ -1,12 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Food
-from django.db.models import Q
+from .forms import FoodForm
+from django.contrib.auth.decorators import login_required, user_passes_test
 
-def food_list(request):
-    foods = Food.objects.all()
-    return render(request, 'foods/food_list.html', {'foods': foods})
+def is_admin(user):
+    return user.is_superuser 
+
+@login_required
+@user_passes_test(is_admin)
+def add_food(request):
+    if request.method == 'POST':
+        form = FoodForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('food-list')  
+    else:
+        form = FoodForm()
+    return render(request, 'foods/add_food.html', {'form': form})
 
 
+@login_required
 def food_list(request):
     query = request.GET.get('q')
     food_type = request.GET.get('type')
@@ -20,5 +33,7 @@ def food_list(request):
         foods = foods.filter(food_type=food_type)
 
     return render(request, 'foods/food_list.html', {
-        'foods': foods
+        'foods': foods,
+        'query': query,
+        'food_type': food_type,
     })

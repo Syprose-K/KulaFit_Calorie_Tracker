@@ -65,7 +65,7 @@
   // Weight Line Chart
   const weightCtx = document.getElementById('weightChart');
 
-  new Chart(weightCtx, {
+new Chart(weightCtx, {
     type: 'line',
     data: {
       labels: {{ weight_dates|safe }},
@@ -74,24 +74,53 @@
         data: {{ weight_values|safe }},
         tension: 0.3,
         fill: false
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        pointRadius: 5,
+        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
       }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, position: 'top' },
+      },
+      scales: {
+      y: { beginAtZero: false }
+      }
     }
   });
 
    // Macro Pie Chart
   const macroCtx = document.getElementById('macroChart');
 
-  new Chart(macroCtx, {
-    type: 'pie',
-    data: {
-      labels: {{ macro_labels|safe }},
-      datasets: [{
-        data: {{ macro_values|safe }}
-      }]
+new Chart(macroCtx, {
+  type: 'pie',
+  data: {
+    labels: {{ macro_labels|safe }},
+    datasets: [{
+      data: {{ macro_values|safe }}
+      backgroundColor: [
+        'rgba(75, 192, 192, 0.6)', // Protein
+        'rgba(255, 206, 86, 0.6)', // Carbs
+        'rgba(255, 99, 132, 0.6)'  // Fats
+      ],
+      borderColor: [
+        'rgba(75, 192, 192, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(255, 99, 132, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: true, position: 'right' }
     }
-  });
+  }
+});
 
-
-<script>
+</script>
 
 {% endblock %}

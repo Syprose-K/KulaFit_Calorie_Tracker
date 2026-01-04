@@ -4,7 +4,7 @@ from .forms import MealLogForm, WeightLogForm
 from datetime import date
 from .utils import daily_summary
 from django.db.models import Sum
-from .models import WeightLog
+from .models import WeightLog, MealLog
 
 
 @login_required

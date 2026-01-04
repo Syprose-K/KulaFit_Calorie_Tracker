@@ -3,12 +3,44 @@
 
 <h2>Dashboard – {{ date }}</h2>
 
-<ul>
-  <li>Calories: {{ summary.calories }} kcal</li>
-  <li>Protein: {{ summary.protein }} g</li>
-  <li>Carbs: {{ summary.carbs }} g</li>
-  <li>Fats: {{ summary.fats }} g</li>
-</ul>
+<div class="row text-center mb-4">
+  <div class="col-md-3">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Calories</h6>
+        <h4>{{ summary.calories }} kcal</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Protein</h6>
+        <h4>{{ summary.protein }} g</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Carbs</h6>
+        <h4>{{ summary.carbs }} g</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Fats</h6>
+        <h4>{{ summary.fats }} g</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <hr>
 

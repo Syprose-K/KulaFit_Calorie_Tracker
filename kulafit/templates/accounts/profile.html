@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>My Profile</h2>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h3>My Profile</h3>
 
-<p><strong>Username:</strong> {{ user.username }}</p>
-<p><strong>Email:</strong> {{ user.email }}</p>
-<p><strong>Date of Birth:</strong> {{ user.date_of_birth }}</p>
+    {% if user.photo %}
+      <img src="{{ user.photo.url }}" class="rounded-circle mb-3" width="120">
+    {% endif %}
 
-{% if user.photo %}
-  <img src="{{ user.photo.url }}" width="150">
-{% endif %}
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Date of Birth:</strong> {{ user.date_of_birth|default:"Not provided" }}</p>
+  </div>
+</div>
 {% endblock %}

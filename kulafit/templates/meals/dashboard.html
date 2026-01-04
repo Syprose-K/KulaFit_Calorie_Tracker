@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 <h2>Dashboard – {{ date }}</h2>
 
 <div class="row text-center mb-4">
+  <!-- Calories Card -->
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="card-body">
@@ -12,7 +14,7 @@
       </div>
     </div>
   </div>
-
+  <!-- Protein Card -->
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="card-body">
@@ -21,7 +23,7 @@
       </div>
     </div>
   </div>
-
+  <!-- Carbs Card -->
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="card-body">
@@ -30,7 +32,7 @@
       </div>
     </div>
   </div>
-
+  <!-- Fats Card -->
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="card-body">
@@ -41,56 +43,48 @@
   </div>
 </div>
 
-<div style="width: 80%; margin: auto; margin-top:40px;">
+<!-- Calories Last 7 Days -->
+<div style="width: 80%; margin:auto; margin-top:40px;">
   <h3>Calories Last 7 Days</h3>
-  <canvas id="caloriesChart"></canvas>
+  <canvas id="caloriesChart" height="200"></canvas>
 </div>
 
+<!-- Weight Progress -->
+<div style="width: 80%; margin:auto; margin-top:40px;">
+  <h3>Weight Progress</h3>
+  <canvas id="weightChart" height="200"></canvas>
+</div>
+
+<!-- Macro Distribution -->
+<div style="width: 60%; margin:auto; margin-top:40px;">
+  <h3>Macro Distribution</h3>
+  <canvas id="macroChart" height="200"></canvas>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const caloriesCtx = document.getElementById('caloriesChart');
-new Chart(caloriesCtx, {
+  // Calories Last 7 Days Bar Chart
+  new Chart(document.getElementById('caloriesChart'), {
     type: 'bar',
     data: {
-        labels: {{ last7_dates|safe }},
-        datasets: [{
-            label: 'Calories (kcal)',
-            data: {{ last7_calories|safe }},
-            backgroundColor: 'rgba(255, 159, 64, 0.6)',
-            borderColor: 'rgba(255, 159, 64, 1)',
-            borderWidth: 1
-        }]
+      labels: {{ last7_dates|safe }},
+      datasets: [{
+        label: 'Calories (kcal)',
+        data: {{ last7_calories|safe }},
+        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+        borderColor: 'rgba(255, 159, 64, 1)',
+        borderWidth: 1
+      }]
     },
     options: {
-        responsive: true,
-        scales: { y: { beginAtZero: true } }
+      responsive: true,
+      scales: { y: { beginAtZero: true } }
     }
-});
-</script>
+  });
 
-<hr>
-
-<!-- CHARTS -->
-<div style="width: 80%; margin: auto;">
-<h3>Weight Progress</h3>
-<canvas id="weightChart"></canvas>
-</div>
-
-<br>
-
-<div style="width: 60%; margin: auto;">
-  <h3>Macro Distribution</h3>
-  <canvas id="macroChart"></canvas>
-</div>
-
-<!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Charts Script -->
-<script>
   // Weight Line Chart
-  const weightCtx = document.getElementById('weightChart');
-
-new Chart(weightCtx, {
+  new Chart(document.getElementById('weightChart'), {
     type: 'line',
     data: {
       labels: {{ weight_dates|safe }},
@@ -98,53 +92,45 @@ new Chart(weightCtx, {
         label: 'Weight (kg)',
         data: {{ weight_values|safe }},
         tension: 0.3,
-        fill: false
+        fill: false,
         borderColor: 'rgba(54, 162, 235, 1)',
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         pointRadius: 5,
-        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+        pointBackgroundColor: 'rgba(54, 162, 235, 1)'
       }]
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: { display: true, position: 'top' },
-      },
-      scales: {
-      y: { beginAtZero: false }
-      }
+      plugins: { legend: { display: true, position: 'top' } },
+      scales: { y: { beginAtZero
     }
   });
 
-   // Macro Pie Chart
-  const macroCtx = document.getElementById('macroChart');
-
-new Chart(macroCtx, {
-  type: 'pie',
-  data: {
-    labels: {{ macro_labels|safe }},
-    datasets: [{
-      data: {{ macro_values|safe }}
-      backgroundColor: [
-        'rgba(75, 192, 192, 0.6)', // Protein
-        'rgba(255, 206, 86, 0.6)', // Carbs
-        'rgba(255, 99, 132, 0.6)'  // Fats
-      ],
-      borderColor: [
-        'rgba(75, 192, 192, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(255, 99, 132, 1)'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: true, position: 'right' }
+  // Macro Distribution Pie Chart
+  new Chart(document.getElementById('macroChart'), {
+    type: 'pie',
+    data: {
+      labels: {{ macro_labels|safe }},
+      datasets: [{
+        data: {{ macro_values|safe }},
+        backgroundColor: [
+          'rgba(75, 192, 192, 0.6)',  // Protein
+          'rgba(255, 206, 86, 0.6)',  // Carbs
+          'rgba(255, 99, 132, 0.6)'   // Fats
+        ],
+        borderColor: [
+          'rgba(75, 192, 192, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(255, 99, 132, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true, position: 'right' } }
     }
-  }
-});
+  });
 
 </script>
 

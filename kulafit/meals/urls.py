@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import log_meal, log_weight, dashboard
+from . import views
 
 app_name = 'meals'
 

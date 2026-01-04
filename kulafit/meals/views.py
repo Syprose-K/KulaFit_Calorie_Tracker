@@ -5,6 +5,8 @@ from datetime import date,timedelta
 from .utils import daily_summary
 from django.db.models import Sum
 from .models import MealLog, WeightLog
+import json
+
 
 
 @login_required
@@ -55,7 +57,7 @@ def log_meal(request):
             meal = form.save(commit=False)
             meal.user = request.user
             meal.save()
-            return redirect('food-list')
+            return redirect('meals:dashboard')
     else:
         form = MealLogForm()
     return render(request, 'meals/log_meal.html', {'form': form})
@@ -82,7 +84,7 @@ def log_weight(request):
             weight_log = form.save(commit=False)
             weight_log.user = request.user
             weight_log.save()
-            return redirect('dashboard')
+            return redirect('meals:dashboard')
     else:
         form = WeightLogForm()
 

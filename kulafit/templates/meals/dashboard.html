@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% load static %}
+
 {% block content %}
 
 <h2>Dashboard – {{ date }}</h2>
 
+<!-- SUMMARY CARDS -->
 <div class="row text-center mb-4">
-  <!-- Calories Card -->
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="card-body">
@@ -14,7 +14,7 @@
       </div>
     </div>
   </div>
-  <!-- Protein Card -->
+
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="card-body">
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <!-- Carbs Card -->
+
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="card-body">
@@ -32,7 +32,7 @@
       </div>
     </div>
   </div>
-  <!-- Fats Card -->
+
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="card-body">
@@ -43,37 +43,45 @@
   </div>
 </div>
 
-<!-- Calories Last 7 Days -->
-<div style="width: 80%; margin:auto; margin-top:40px;">
-  <h3>Calories Last 7 Days</h3>
+<!-- CALORIES LAST 7 DAYS -->
+<div class="mt-5" style="width:80%; margin:auto;">
+  <h4>Calories – Last 7 Days</h4>
   <canvas id="caloriesChart" height="200"></canvas>
 </div>
 
-<!-- Weight Progress -->
-<div style="width: 80%; margin:auto; margin-top:40px;">
-  <h3>Weight Progress</h3>
+<!-- WEIGHT PROGRESS -->
+<div class="mt-5" style="width:80%; margin:auto;">
+  <h4>Weight Progress</h4>
   <canvas id="weightChart" height="200"></canvas>
 </div>
 
-<!-- Macro Distribution -->
-<div style="width: 60%; margin:auto; margin-top:40px;">
-  <h3>Macro Distribution</h3>
+<!-- MACRO DISTRIBUTION -->
+<div class="mt-5" style="width:60%; margin:auto;">
+  <h4>Macro Distribution</h4>
   <canvas id="macroChart" height="200"></canvas>
 </div>
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-  // Calories Last 7 Days Bar Chart
+  // Parse JSON data safely
+  const weightDates = JSON.parse('{{ weight_dates|escapejs }}');
+  const weightValues = JSON.parse('{{ weight_values|escapejs }}');
+  const macroLabels = JSON.parse('{{ macro_labels|escapejs }}');
+  const macroValues = JSON.parse('{{ macro_values|escapejs }}');
+  const last7Dates = JSON.parse('{{ last7_dates|escapejs }}');
+  const last7Calories = JSON.parse('{{ last7_calories|escapejs }}');
+
+  // Calories Bar Chart
   new Chart(document.getElementById('caloriesChart'), {
     type: 'bar',
     data: {
-      labels: {{ last7_dates|safe }},
+      labels: last7Dates,
       datasets: [{
         label: 'Calories (kcal)',
-        data: {{ last7_calories|safe }},
+        data: last7Calories,
         backgroundColor: 'rgba(255, 159, 64, 0.6)',
-        borderColor: 'rgba(255, 159, 64, 1)',
         borderWidth: 1
       }]
     },
@@ -87,51 +95,38 @@
   new Chart(document.getElementById('weightChart'), {
     type: 'line',
     data: {
-      labels: {{ weight_dates|safe }},
+      labels: weightDates,
       datasets: [{
         label: 'Weight (kg)',
-        data: {{ weight_values|safe }},
+        data: weightValues,
         tension: 0.3,
         fill: false,
         borderColor: 'rgba(54, 162, 235, 1)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        pointRadius: 5,
-        pointBackgroundColor: 'rgba(54, 162, 235, 1)'
+        pointRadius: 5
       }]
     },
     options: {
       responsive: true,
-      plugins: { legend: { display: true, position: 'top' } },
-      scales: { y: { beginAtZero
+      scales: { y: { beginAtZero: false } }
     }
   });
 
-  // Macro Distribution Pie Chart
+  // Macro Pie Chart
   new Chart(document.getElementById('macroChart'), {
     type: 'pie',
     data: {
-      labels: {{ macro_labels|safe }},
+      labels: macroLabels,
       datasets: [{
-        data: {{ macro_values|safe }},
+        data: macroValues,
         backgroundColor: [
-          'rgba(75, 192, 192, 0.6)',  // Protein
-          'rgba(255, 206, 86, 0.6)',  // Carbs
-          'rgba(255, 99, 132, 0.6)'   // Fats
-        ],
-        borderColor: [
-          'rgba(75, 192, 192, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(255, 99, 132, 1)'
-        ],
-        borderWidth: 1
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(255, 99, 132, 0.6)'
+        ]
       }]
     },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: true, position: 'right' } }
-    }
+    options: { responsive: true }
   });
-
 </script>
 
 {% endblock %}

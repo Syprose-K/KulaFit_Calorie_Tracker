@@ -41,12 +41,14 @@ def dashboard(request):
 
     return render(request, 'meals/dashboard.html', {
         'summary': summary,
-        'weight_dates': weight_dates,
-        'weight_values': weight_values,
-        'macro_labels': macro_labels,
-        'macro_values': macro_values,
+        'weight_dates': json.dumps(weight_dates),
+        'weight_values': json.dumps(weight_values),
+        'macro_labels': json.dumps(macro_labels),
+        'macro_values': json.dumps(macro_values),
+        'last7_dates': json.dumps(last7_dates),
+        'last7_calories': json.dumps(last7_calories),
         'date': today,
-     })
+    })
 
 
 @login_required

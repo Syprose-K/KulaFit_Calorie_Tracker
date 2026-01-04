@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'foods',
     'meals',
     'django.contrib.sites',
+    'users',
 ]
 
 MIDDLEWARE = [
